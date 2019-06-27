@@ -14,10 +14,14 @@ defmodule PlateSlateWeb.MenuItemsTest do
   """
 
   test "menuItems field returns menu items" do
-    conn = build_conn()
-    conn = get conn, "/api", query: @query
+    response =
+      build_conn()
+      |> get("/api",
+        query: @query
+      )
+      |> json_response(200)
 
-    assert json_response(conn, 200) == %{
+    assert response == %{
              "data" => %{
                "menuItems" => [
                  %{"name" => "Reuben"},
