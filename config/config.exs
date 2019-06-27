@@ -20,6 +20,7 @@ config :plate_slate, PlateSlateWeb.Endpoint,
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
+  level: :info,
   metadata: [:request_id]
 
 # Use Jason for JSON parsing in Phoenix
