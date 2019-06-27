@@ -24,7 +24,7 @@ defmodule PlateSlateWeb.Schema do
     field :name, :string
 
     @desc "The price of the menu item"
-    field :price, :float
+    field :price, :decimal
 
     @desc "The id of the menu item"
     field :id, :id
