@@ -3,12 +3,35 @@ defmodule PlateSlateWeb.Schema do
 
   import_types Absinthe.Type.Custom
 
+  enum :sort_order do
+    value :asc
+    value :desc
+  end
+
+  input_object :menu_item_filter do
+    @desc "Matching a name"
+    field :name, :string
+
+    @desc "Matching a category name"
+    field :category, :string
+
+    @desc "Matching a tag"
+    field :tag, :string
+
+    @desc "Priced above a value"
+    field :priced_above, :float
+
+    @desc "Priced below a value"
+    field :priced_below, :float
+  end
+
   query do
     @desc "The list of available items on the menu"
     field :menu_items, list_of(:menu_item) do
-      resolve fn _, _, _ ->
-        {:ok, PlateSlate.Menu.list_items()}
-      end
+      arg :filter, :menu_item_filter
+      arg :order, type: :sort_order, default_value: :asc
+
+      resolve &PlateSlateWeb.Resolvers.Menu.menu_items/3
     end
   end
 

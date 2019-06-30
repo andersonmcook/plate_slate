@@ -107,12 +107,39 @@ defmodule PlateSlate.Menu do
 
   ## Examples
 
-      iex> list_items()
+      iex> list_items(%{})
       [%Item{}, ...]
 
   """
-  def list_items do
-    Repo.all(Item)
+  def list_items(filters) do
+    filters
+    |> Enum.reduce(Item, fn
+      {:order, order}, query ->
+        from q in query, order_by: {^order, :name}
+
+      {:filter, filter}, query ->
+        filter_with(query, filter)
+    end)
+    |> Repo.all()
+  end
+
+  defp filter_with(query, filter) do
+    Enum.reduce(filter, query, fn
+      {:category, category}, query ->
+        from q in query, join: c in assoc(q, :category), where: ilike(c.name, ^"%#{category}%")
+
+      {:name, name}, query ->
+        from q in query, where: ilike(q.name, ^"%#{name}%")
+
+      {:priced_above, price}, query ->
+        from q in query, where: q.price >= ^price
+
+      {:priced_below, price}, query ->
+        from q in query, where: q.price <= ^price
+
+      {:tag, tag}, query ->
+        from q in query, join: t in assoc(q, :tags), where: ilike(t.name, ^"%#{tag}%")
+    end)
   end
 
   @doc """
