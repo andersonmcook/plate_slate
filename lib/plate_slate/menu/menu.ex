@@ -125,6 +125,12 @@ defmodule PlateSlate.Menu do
 
   defp filter_with(query, filter) do
     Enum.reduce(filter, query, fn
+      {:added_after, date}, query ->
+        from q in query, where: q.added_on >= ^date
+
+      {:added_before, date}, query ->
+        from q in query, where: q.added_on <= ^date
+
       {:category, category}, query ->
         from q in query, join: c in assoc(q, :category), where: ilike(c.name, ^"%#{category}%")
 
