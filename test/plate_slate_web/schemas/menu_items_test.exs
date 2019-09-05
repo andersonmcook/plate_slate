@@ -134,4 +134,28 @@ defmodule PlateSlateWeb.MenuItemsTest do
              }
            ]
   end
+
+  test "search returns a list of menu items and categories" do
+    query = """
+    query Search($term: String!) {
+      search(matching: $term) {
+        ... on Category { name }
+        ... on MenuItem { name }
+        __typename
+      }
+    }
+    """
+
+    variables = %{term: "e"}
+
+    search_results =
+      build_conn()
+      |> get("/api", query: query, variables: variables)
+      |> json_response(200)
+      |> get_in(["data", "search"])
+
+    assert length(search_results) > 0
+    assert Enum.find(search_results, &(&1["__typename"] == "Category"))
+    assert Enum.find(search_results, &(&1["__typename"] == "MenuItem"))
+  end
 end

@@ -4,9 +4,13 @@ defmodule PlateSlate.Menu do
   """
 
   import Ecto.Query, warn: false
+
   alias PlateSlate.Repo
 
-  alias PlateSlate.Menu.{Category, Item}
+  alias PlateSlate.Menu.{
+    Category,
+    Item
+  }
 
   @doc """
   Returns the list of categories.
@@ -227,5 +231,17 @@ defmodule PlateSlate.Menu do
   """
   def change_item(%Item{} = item) do
     Item.changeset(item, %{})
+  end
+
+  @doc """
+  Search for a Category or Item.
+  """
+  def search(term) do
+    term = "%#{term}%"
+
+    Enum.flat_map(
+      [Category, Item],
+      &Repo.all(from q in &1, where: ilike(q.name, ^term) or ilike(q.description, ^term))
+    )
   end
 end
