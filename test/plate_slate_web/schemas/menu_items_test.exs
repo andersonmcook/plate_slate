@@ -139,8 +139,7 @@ defmodule PlateSlateWeb.MenuItemsTest do
     query = """
     query Search($term: String!) {
       search(matching: $term) {
-        ... on Category { name }
-        ... on MenuItem { name }
+        name
         __typename
       }
     }
@@ -157,5 +156,6 @@ defmodule PlateSlateWeb.MenuItemsTest do
     assert length(search_results) > 0
     assert Enum.find(search_results, &(&1["__typename"] == "Category"))
     assert Enum.find(search_results, &(&1["__typename"] == "MenuItem"))
+    assert Enum.all?(search_results, & &1["name"])
   end
 end

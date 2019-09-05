@@ -10,8 +10,8 @@ defmodule PlateSlateWeb.Schema.Search do
 
   alias PlateSlateWeb.Resolvers.Search
 
-  union :search_result do
-    types [:category, :menu_item]
+  interface :search_result do
+    field :name, :string
 
     resolve_type fn
       %Category{}, _resolution -> :category
