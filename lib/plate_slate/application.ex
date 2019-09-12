@@ -5,13 +5,18 @@ defmodule PlateSlate.Application do
 
   use Application
 
+  alias PlateSlate.Repo
+  alias PlateSlateWeb.Endpoint
+
   def start(_type, _args) do
     # List all child processes to be supervised
     children = [
       # Start the Ecto repository
-      PlateSlate.Repo,
+      Repo,
       # Start the endpoint when the application starts
-      PlateSlateWeb.Endpoint
+      Endpoint,
+      # Start Subscription Supervisor
+      {Absinthe.Subscription, [Endpoint]}
       # Starts a worker by calling: PlateSlate.Worker.start_link(arg)
       # {PlateSlate.Worker, arg},
     ]
@@ -25,7 +30,7 @@ defmodule PlateSlate.Application do
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
   def config_change(changed, _new, removed) do
-    PlateSlateWeb.Endpoint.config_change(changed, removed)
+    Endpoint.config_change(changed, removed)
     :ok
   end
 end

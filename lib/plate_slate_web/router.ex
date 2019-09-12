@@ -1,6 +1,11 @@
 defmodule PlateSlateWeb.Router do
   use PlateSlateWeb, :router
 
+  alias PlateSlateWeb.{
+    Schema,
+    UserSocket
+  }
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -16,10 +21,11 @@ defmodule PlateSlateWeb.Router do
   scope "/" do
     pipe_through :api
 
-    forward "/api", Absinthe.Plug, schema: PlateSlateWeb.Schema
+    forward "/api", Absinthe.Plug, schema: Schema
 
     forward "/graphiql", Absinthe.Plug.GraphiQL,
-      schema: PlateSlateWeb.Schema,
-      interface: :playground
+      interface: :playground,
+      schema: Schema,
+      socket: UserSocket
   end
 end

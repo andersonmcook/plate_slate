@@ -5,6 +5,13 @@ defmodule PlateSlateWeb.Schema.Menu do
 
   alias PlateSlateWeb.Resolvers.Menu
 
+  input_object :menu_item_input do
+    field :category_id, non_null(:id)
+    field :description, :string
+    field :name, non_null(:string)
+    field :price, non_null(:decimal)
+  end
+
   @desc "Filtering options for the menu item list"
   input_object :menu_item_filter do
     @desc "Added to the menu after this date"
@@ -47,6 +54,13 @@ defmodule PlateSlateWeb.Schema.Menu do
 
     @desc "The price of the menu item"
     field :price, :decimal
+  end
+
+  object :menu_mutations do
+    field :create_menu_item, :menu_item do
+      arg :input, non_null(:menu_item_input)
+      resolve &Menu.create_item/3
+    end
   end
 
   object :menu_queries do
