@@ -8,7 +8,7 @@ defmodule PlateSlateWeb.Resolvers.Ordering do
     |> Ordering.create_order()
     |> case do
       {:ok, order} -> {:ok, %{order: order}}
-      {:error, changeset} -> %{errors: transform_errors(changeset)}
+      {:error, changeset} -> {:ok, %{errors: transform_errors(changeset)}}
     end
   end
 

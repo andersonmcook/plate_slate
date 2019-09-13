@@ -6,7 +6,7 @@ defmodule PlateSlateWeb.Schema do
   import_types PlateSlateWeb.Schema.{
     Category,
     Menu,
-    # Ordering,
+    Ordering,
     Search
   }
 
@@ -23,6 +23,7 @@ defmodule PlateSlateWeb.Schema do
 
   mutation do
     import_fields :menu_mutations
+    import_fields :ordering_mutations
   end
 
   query do

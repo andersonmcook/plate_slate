@@ -18,8 +18,8 @@ defmodule PlateSlate.Ordering.Order do
   @doc false
   def changeset(order, attrs) do
     order
-    |> cast(attrs, [:customer_number, :ordered_at, :state])
+    |> cast(attrs, [:customer_number])
     |> cast_embed(:items)
-    |> validate_required([:customer_number, :ordered_at, :state])
+    |> validate_required([:customer_number])
   end
 end
