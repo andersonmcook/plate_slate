@@ -30,4 +30,10 @@ defmodule PlateSlateWeb.Schema do
     import_fields :menu_queries
     import_fields :search_queries
   end
+
+  subscription do
+    field :new_order, :order do
+      config fn _args, _info -> {:ok, topic: "*"} end
+    end
+  end
 end
