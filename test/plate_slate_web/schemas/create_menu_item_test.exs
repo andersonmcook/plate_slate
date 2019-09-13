@@ -20,10 +20,16 @@ defmodule PlateSlateWeb.CreateMenuItemTest do
 
   @query """
   mutation ($menuItem: MenuItemInput!) {
-    menuItem: createMenuItem(input: $menuItem) {
-      description
-      name
-      price
+    createMenuItem(input: $menuItem) {
+      errors {
+        key
+        message
+      }
+      menuItem {
+        description
+        name
+        price
+      }
     }
   }
   """
@@ -36,18 +42,39 @@ defmodule PlateSlateWeb.CreateMenuItemTest do
       "price" => "5.75"
     }
 
-    data =
+    result =
       build_conn()
       |> post("/api", query: @query, variables: %{"menuItem" => menu_item})
       |> json_response(200)
-      |> Map.get("data")
+      |> get_in(["data", "createMenuItem"])
 
-    assert data == %{
+    assert result == %{
+             "errors" => nil,
              "menuItem" => %{
                "description" => menu_item["description"],
                "name" => menu_item["name"],
                "price" => menu_item["price"]
              }
+           }
+  end
+
+  test "creating a menu item with an existing name fails", %{category_id: category_id} do
+    menu_item = %{
+      "categoryId" => category_id,
+      "description" => "It's a reuben",
+      "name" => "Reuben",
+      "price" => "6.66"
+    }
+
+    result =
+      build_conn()
+      |> post("/api", query: @query, variables: %{"menuItem" => menu_item})
+      |> json_response(200)
+      |> get_in(["data", "createMenuItem"])
+
+    assert result == %{
+             "errors" => [%{"key" => "name", "message" => "has already been taken"}],
+             "menuItem" => nil
            }
   end
 end

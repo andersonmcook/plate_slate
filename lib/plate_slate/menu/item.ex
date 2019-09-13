@@ -26,5 +26,6 @@ defmodule PlateSlate.Menu.Item do
     |> cast(attrs, [:added_on, :description, :name, :price])
     |> validate_required([:name, :price])
     |> foreign_key_constraint(:category)
+    |> unique_constraint(:name)
   end
 end
