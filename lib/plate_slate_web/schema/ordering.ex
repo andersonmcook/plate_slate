@@ -33,9 +33,25 @@ defmodule PlateSlateWeb.Schema.Ordering do
   end
 
   object :ordering_mutations do
+    field :complete_order, :order_result do
+      arg :id, non_null(:id)
+      resolve &Ordering.complete_order/3
+    end
+
     field :place_order, :order_result do
       arg :input, non_null(:place_order_input)
       resolve &Ordering.place_order/3
+    end
+
+    field :ready_order, :order_result do
+      arg :id, non_null(:id)
+      resolve &Ordering.ready_order/3
+    end
+  end
+
+  object :ordering_subscriptions do
+    field :new_order, :order do
+      config fn _args, _info -> {:ok, topic: "*"} end
     end
   end
 end

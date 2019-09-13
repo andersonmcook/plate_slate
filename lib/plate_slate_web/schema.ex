@@ -32,8 +32,6 @@ defmodule PlateSlateWeb.Schema do
   end
 
   subscription do
-    field :new_order, :order do
-      config fn _args, _info -> {:ok, topic: "*"} end
-    end
+    import_fields :ordering_subscriptions
   end
 end

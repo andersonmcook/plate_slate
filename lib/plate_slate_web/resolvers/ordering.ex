@@ -4,6 +4,16 @@ defmodule PlateSlateWeb.Resolvers.Ordering do
   alias PlateSlate.Ordering
   alias PlateSlateWeb.Endpoint
 
+  def complete_order(_, %{id: id}, _) do
+    id
+    |> Ordering.get_order!()
+    |> Ordering.update_order(%{state: "complete"})
+    |> case do
+      {:ok, order} -> %{order: order}
+      {:error, changeset} -> {:ok, %{errors: transform_errors(changeset)}}
+    end
+  end
+
   def place_order(_, %{input: input}, _) do
     input
     |> Ordering.create_order()
@@ -14,6 +24,16 @@ defmodule PlateSlateWeb.Resolvers.Ordering do
 
       {:error, changeset} ->
         {:ok, %{errors: transform_errors(changeset)}}
+    end
+  end
+
+  def ready_order(_, %{id: id}, _) do
+    id
+    |> Ordering.get_order!()
+    |> Ordering.update_order(%{state: "ready"})
+    |> case do
+      {:ok, order} -> %{order: order}
+      {:error, changeset} -> {:ok, %{errors: transform_errors(changeset)}}
     end
   end
 
