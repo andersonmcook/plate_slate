@@ -9,7 +9,7 @@ defmodule PlateSlateWeb.Resolvers.Ordering do
     |> Ordering.get_order!()
     |> Ordering.update_order(%{state: "complete"})
     |> case do
-      {:ok, order} -> %{order: order}
+      {:ok, order} -> {:ok, %{order: order}}
       {:error, changeset} -> {:ok, %{errors: transform_errors(changeset)}}
     end
   end
@@ -32,7 +32,7 @@ defmodule PlateSlateWeb.Resolvers.Ordering do
     |> Ordering.get_order!()
     |> Ordering.update_order(%{state: "ready"})
     |> case do
-      {:ok, order} -> %{order: order}
+      {:ok, order} -> {:ok, %{order: order}}
       {:error, changeset} -> {:ok, %{errors: transform_errors(changeset)}}
     end
   end

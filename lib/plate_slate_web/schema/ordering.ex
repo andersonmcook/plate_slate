@@ -53,5 +53,18 @@ defmodule PlateSlateWeb.Schema.Ordering do
     field :new_order, :order do
       config fn _args, _info -> {:ok, topic: "*"} end
     end
+
+    field :update_order, :order do
+      arg :id, non_null(:id)
+      config fn args, _info -> {:ok, topic: args.id} end
+
+      trigger [:complete_order, :ready_order],
+        topic: fn
+          %{order: order} -> [order.id]
+          _ -> []
+        end
+
+      resolve fn %{order: order}, _, _ -> {:ok, order} end
+    end
   end
 end
