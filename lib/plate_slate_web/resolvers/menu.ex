@@ -1,7 +1,10 @@
 defmodule PlateSlateWeb.Resolvers.Menu do
   @moduledoc false
 
-  alias PlateSlate.Menu
+  alias PlateSlate.{
+    Menu,
+    Repo
+  }
 
   def create_item(_, %{input: input}, _) do
     input
@@ -19,10 +22,14 @@ defmodule PlateSlateWeb.Resolvers.Menu do
     {:ok,
      category
      |> Ecto.assoc(:items)
-     |> PlateSlate.Repo.all()}
+     |> Repo.all()}
   end
 
   def menu_items(_, args, _) do
     {:ok, Menu.list_items(args)}
+  end
+
+  def categories(_, _, _) do
+    {:ok, Menu.list_categories()}
   end
 end

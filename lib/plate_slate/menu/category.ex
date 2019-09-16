@@ -10,9 +10,7 @@ defmodule PlateSlate.Menu.Category do
   schema "categories" do
     field :description, :string
     field :name, :string, null: false
-
     has_many :items, Item
-
     timestamps()
   end
 

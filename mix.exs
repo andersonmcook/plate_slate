@@ -36,6 +36,7 @@ defmodule PlateSlate.MixProject do
       {:absinthe_phoenix, "~> 1.4.4"},
       {:absinthe_plug, "~> 1.4.7"},
       {:absinthe, "~> 1.4.16"},
+      {:dataloader, "~> 1.0"},
       {:decimal, "~> 1.8"},
       {:ecto_sql, "~> 3.2"},
       {:gettext, "~> 0.11"},

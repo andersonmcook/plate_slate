@@ -29,6 +29,7 @@ defmodule PlateSlateWeb.Schema do
   end
 
   query do
+    import_fields :category_queries
     import_fields :menu_queries
     import_fields :search_queries
   end
@@ -38,11 +39,26 @@ defmodule PlateSlateWeb.Schema do
   end
 
   @impl true
+  def context(ctx) do
+    ~w(items)a
+    |> Enum.reduce(
+      Dataloader.new(),
+      &Dataloader.add_source(&2, &1, Dataloader.Ecto.new(PlateSlate.Repo))
+    )
+    |> (&Map.put(ctx, :loader, &1)).()
+  end
+
+  @impl true
   def middleware(middleware, _field, %{identifier: :mutation}) do
     middleware ++ [ChangesetErrors]
   end
 
   def middleware(middleware, _field, _object) do
     middleware
+  end
+
+  @impl true
+  def plugins do
+    [Absinthe.Middleware.Dataloader | Absinthe.Plugin.defaults()]
   end
 end

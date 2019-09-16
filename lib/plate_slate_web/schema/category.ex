@@ -3,6 +3,8 @@ defmodule PlateSlateWeb.Schema.Category do
 
   use Absinthe.Schema.Notation
 
+  import Absinthe.Resolution.Helpers, only: [dataloader: 1]
+
   alias PlateSlateWeb.Resolvers.Menu
 
   @desc "A category of menu items"
@@ -11,10 +13,21 @@ defmodule PlateSlateWeb.Schema.Category do
 
     field :description, :string
 
-    field :items, list_of(:menu_item) do
+    # without dataloader
+    field :itemz, list_of(non_null(:menu_item)) do
       resolve &Menu.items_for_category/3
     end
 
+    # with dataloader
+    # dataloader/1 needs association and field name to align
+    field :items, list_of(non_null(:menu_item)), resolve: dataloader(:items)
+
     field :name, :string
+  end
+
+  object :category_queries do
+    field :categories, non_null(list_of(non_null(:category))) do
+      resolve &Menu.categories/3
+    end
   end
 end
