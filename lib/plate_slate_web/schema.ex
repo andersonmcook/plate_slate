@@ -1,6 +1,8 @@
 defmodule PlateSlateWeb.Schema do
   use Absinthe.Schema
 
+  alias PlateSlateWeb.Schema.Middleware.ChangesetErrors
+
   import_types Absinthe.Type.Custom
 
   import_types PlateSlateWeb.Schema.{
@@ -33,5 +35,14 @@ defmodule PlateSlateWeb.Schema do
 
   subscription do
     import_fields :ordering_subscriptions
+  end
+
+  @impl true
+  def middleware(middleware, _field, %{identifier: :mutation}) do
+    middleware ++ [ChangesetErrors]
+  end
+
+  def middleware(middleware, _field, _object) do
+    middleware
   end
 end
