@@ -1,7 +1,10 @@
 defmodule PlateSlateWeb.Schema do
   use Absinthe.Schema
 
-  alias PlateSlateWeb.Schema.Middleware.ChangesetErrors
+  alias PlateSlateWeb.Schema.Middleware.{
+    ChangesetErrors,
+    FormatDate
+  }
 
   import_types Absinthe.Type.Custom
 
@@ -12,9 +15,16 @@ defmodule PlateSlateWeb.Schema do
     Search
   }
 
+  @desc "sort order type"
   enum :sort_order do
     value :asc
     value :desc
+  end
+
+  @desc "date format type"
+  enum :date_format do
+    value :mmm_dd_yyyy
+    value :relative, description: "human readable time elapsed"
   end
 
   @desc "An error encountered trying to persist input"
@@ -51,6 +61,11 @@ defmodule PlateSlateWeb.Schema do
   @impl true
   def middleware(middleware, _field, %{identifier: :mutation}) do
     middleware ++ [ChangesetErrors]
+  end
+
+  def middleware(middleware, %{identifier: identifier} = field, object)
+      when identifier in [:added_on] do
+    Absinthe.Schema.replace_default(middleware, {FormatDate, identifier}, field, object)
   end
 
   def middleware(middleware, _field, _object) do

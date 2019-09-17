@@ -41,7 +41,9 @@ defmodule PlateSlateWeb.Schema.Menu do
     interfaces [:search_result]
 
     @desc "When the menu item was added"
-    field :added_on, :date
+    field :added_on, :string do
+      arg :format, :date_format
+    end
 
     @desc "The description of the menu item"
     field :description, :string
