@@ -6,14 +6,18 @@ defmodule PlateSlateWeb.Schema do
     FormatDate
   }
 
-  import_types Absinthe.Type.Custom
-
-  import_types PlateSlateWeb.Schema.{
+  alias PlateSlateWeb.Schema.{
     Category,
     Menu,
     Ordering,
     Search
   }
+
+  import_types Absinthe.Type.Custom
+  import_types Category
+  import_types Menu
+  import_types Ordering
+  import_types Search
 
   @desc "sort order type"
   enum :sort_order do

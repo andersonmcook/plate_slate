@@ -15,7 +15,8 @@ config :plate_slate, PlateSlateWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "mf1tcTUis1TXZk/t1qGcmnz0EJaruHK4igLXNKVrva6yjuItRuOlLm4Fm0lXFRth",
   render_errors: [view: PlateSlateWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: PlateSlate.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub_server: PlateSlate.PubSub
+
 
 # Configures Elixir's Logger
 config :logger, :console,
