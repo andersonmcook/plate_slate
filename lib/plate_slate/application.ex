@@ -10,8 +10,8 @@ defmodule PlateSlate.Application do
     children = [
       Repo,
       Endpoint,
-      {Absinthe.Subscription, [Endpoint]},
-      {Phoenix.PubSub, [name: PlateSlate.PubSub, adapter: Phoenix.PubSub.PG2]}
+      {Phoenix.PubSub, [name: PlateSlate.PubSub, adapter: Phoenix.PubSub.PG2]},
+      {Absinthe.Subscription, [Endpoint]}
     ]
 
     opts = [strategy: :one_for_one, name: PlateSlate.Supervisor]
