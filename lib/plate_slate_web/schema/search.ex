@@ -11,7 +11,7 @@ defmodule PlateSlateWeb.Schema.Search do
   alias PlateSlateWeb.Resolvers.Search
 
   interface :search_result do
-    field :name, :string
+    field :name, non_null(:string)
 
     resolve_type fn
       %Category{}, _resolution -> :category

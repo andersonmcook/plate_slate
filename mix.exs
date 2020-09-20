@@ -36,6 +36,7 @@ defmodule PlateSlate.MixProject do
       {:absinthe, "~> 1.5"},
       {:absinthe_phoenix, "~> 2.0"},
       {:absinthe_plug, "~> 1.5"},
+      {:cors_plug, "~> 2.0"},
       {:dataloader, "~> 1.0"},
       {:decimal, "~> 1.9"},
       {:ecto_sql, "~> 3.4"},
@@ -62,6 +63,12 @@ defmodule PlateSlate.MixProject do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
+      "graphql.schema": ["absinthe.schema.json --schema PlateSlateWeb.Schema"],
+      "graphql.client": [
+        "cmd 'cd assets && node_modules/.bin/elm-graphql --introspection-file ../schema.json --base Api --output elm'",
+        "cmd 'cp -rf ./assets/elm/Api ./ui/src'",
+        "cmd 'rm -rf ./assets/elm'"
+      ],
       test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end

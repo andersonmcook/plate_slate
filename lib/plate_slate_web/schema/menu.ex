@@ -49,13 +49,13 @@ defmodule PlateSlateWeb.Schema.Menu do
     field :description, :string
 
     @desc "The name of the menu item"
-    field :name, :string
+    field :name, non_null(:string)
 
     @desc "The id of the menu item"
-    field :id, :id
+    field :id, non_null(:id)
 
     @desc "The price of the menu item"
-    field :price, :decimal
+    field :price, non_null(:decimal)
   end
 
   object :menu_item_result do
@@ -72,7 +72,7 @@ defmodule PlateSlateWeb.Schema.Menu do
 
   object :menu_queries do
     @desc "The list of available items on the menu"
-    field :menu_items, list_of(:menu_item) do
+    field :menu_items, non_null(list_of(non_null(:menu_item))) do
       arg :filter, :menu_item_filter
       arg :order, type: :sort_order, default_value: :asc
       resolve &Menu.menu_items/3

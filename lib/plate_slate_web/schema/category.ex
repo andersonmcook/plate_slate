@@ -22,7 +22,7 @@ defmodule PlateSlateWeb.Schema.Category do
     # dataloader/1 needs association and field name to align
     field :items, list_of(non_null(:menu_item)), resolve: dataloader(:items)
 
-    field :name, :string
+    field :name, non_null(:string)
   end
 
   object :category_queries do
