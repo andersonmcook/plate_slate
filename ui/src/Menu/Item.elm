@@ -1,6 +1,9 @@
-module Menu.Item exposing (Item, view)
+module Menu.Item exposing (Item, selectionSet, view)
 
+import Api.Object
+import Api.Object.MenuItem
 import Api.Scalar exposing (Decimal(..))
+import Graphql.SelectionSet as SelectionSet exposing (SelectionSet)
 import Html exposing (Html, div, p, text)
 
 
@@ -22,3 +25,12 @@ view item =
 toString : Api.Scalar.Decimal -> String
 toString (Decimal d) =
     d
+
+
+selectionSet : SelectionSet Item Api.Object.MenuItem
+selectionSet =
+    Item
+        |> SelectionSet.succeed
+        |> SelectionSet.with Api.Object.MenuItem.id
+        |> SelectionSet.with Api.Object.MenuItem.name
+        |> SelectionSet.with Api.Object.MenuItem.price

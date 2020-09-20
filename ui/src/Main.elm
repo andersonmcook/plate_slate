@@ -1,14 +1,13 @@
 module Main exposing (main)
 
-import Api.Object.MenuItem
 import Api.Query
 import Browser
 import Graphql.Http
 import Graphql.Operation
-import Graphql.SelectionSet as SelectionSet exposing (SelectionSet)
+import Graphql.SelectionSet exposing (SelectionSet)
 import Html exposing (Html, div)
 import Menu exposing (Menu)
-import Menu.Item exposing (Item)
+import Menu.Item as Item
 
 
 
@@ -73,15 +72,7 @@ query msg =
 
 getMenuQuery : Cmd Msg
 getMenuQuery =
-    query MenuLoaded <|
-        Api.Query.menuItems
-            identity
-            (Item
-                |> SelectionSet.succeed
-                |> SelectionSet.with Api.Object.MenuItem.id
-                |> SelectionSet.with Api.Object.MenuItem.name
-                |> SelectionSet.with Api.Object.MenuItem.price
-            )
+    query MenuLoaded <| Api.Query.menuItems identity Item.selectionSet
 
 
 
